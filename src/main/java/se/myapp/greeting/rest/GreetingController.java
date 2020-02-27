@@ -38,6 +38,11 @@ public class GreetingController {
             logger.error("Validation error", ve);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ve.getMessage(), ve);
 
+        } catch (UnsupportedOperationException uoe) {
+        	
+        	logger.error("Not implemented error", uoe);
+            throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, uoe.getMessage(), uoe);
+        	
         } catch (Exception e) {
 
             logger.error("Internal error", e);

@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -65,6 +66,22 @@ public class GreetingControllerTest {
 
         // then
         assertThat(response.getStatusCode(), equalTo(HttpStatus.BAD_REQUEST));
+
+    }
+    
+    @Test
+    public void givenBusinessAccountAndSmallType_whenGreeting_thenReturnNotImplemented() {
+        // given
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        String url = "/greeting?account=business";
+        doThrow(new UnsupportedOperationException("")).when(greetingService_mock).greetCustomer(any(),any(),any());
+
+        // when
+        ResponseEntity<String> response = testRestTemplate.getForEntity(url, String.class);
+
+        // then
+        assertThat(response.getStatusCode(), equalTo(HttpStatus.NOT_IMPLEMENTED));
 
     }
 
